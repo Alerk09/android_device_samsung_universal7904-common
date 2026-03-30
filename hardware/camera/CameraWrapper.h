@@ -18,10 +18,33 @@
 #include <utils/Mutex.h>
 #include <hardware/hardware.h>
 #include <hardware/camera.h>
+#include <system/camera_metadata.h>
 #include <CameraParameters.h>
 
 using ::android::hardware::camera::common::V1_0::helper::CameraParameters;
 using ::android::hardware::camera::common::V1_0::helper::Size;
 
 static android::Mutex gCameraWrapperLock;
+
+/*
+ * Strip Samsung vendor tag entries (tag >= 0x80000000) from camera metadata.
+ * These corrupt Java-side CameraCharacteristics parsing when the vendor tag
+ * descriptor doesn't match the actual metadata entries.
+ */
+static camera_metadata_t* sanitize_camera_metadata(const camera_metadata_t *src) {
+    if (!src) return NULL;
+    size_t src_count = get_camera_metadata_entry_count(src);
+    size_t src_data = get_camera_metadata_data_count(src);
+    camera_metadata_t *dst = allocate_camera_metadata(src_count, src_data);
+    if (!dst) return NULL;
+    for (size_t i = 0; i < src_count; i++) {
+        camera_metadata_entry_t entry;
+        if (get_camera_metadata_entry((camera_metadata_t*)src, i, &entry) != 0)
+            continue;
+        if (entry.tag >= 0x80000000u)
+            continue;
+        add_camera_metadata_entry(dst, entry.tag, entry.data.u8, entry.count);
+    }
+    return dst;
+}
 

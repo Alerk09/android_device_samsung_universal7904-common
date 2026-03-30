@@ -28,7 +28,7 @@ debug.fdsan=warn_once
 
 ## FRP
 # Disable invocation of oem_lock
-ro.frp.pst=/dev/block/persistent
+# ro.frp.pst=/dev/block/persistent — disabled for gta3xlwifi (SELinux blocks access, causes boot crash)
 
 ## Fastbootd
 ro.fastbootd.available=true

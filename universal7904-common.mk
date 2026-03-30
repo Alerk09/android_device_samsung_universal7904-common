@@ -48,6 +48,10 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     charger_res_images_vendor
 
+# Camera - sensorservice HIDL needed by stock libsensorndkbridge in vendor
+PRODUCT_PACKAGES += \
+    android.frameworks.sensorservice@1.0.vendor
+
 # ConfigStore
 PRODUCT_PACKAGES += \
     disable_configstore
@@ -61,14 +65,14 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     vendor.lineage.fastcharge@1.0-service.samsung
 
-# Figerprint
-PRODUCT_PACKAGES += \
-    android.hardware.biometrics.fingerprint@2.3-service.samsung
+# Fingerprint — disabled (gta3xlwifi has no fingerprint sensor, crashes on boot)
+# PRODUCT_PACKAGES += \
+#     android.hardware.biometrics.fingerprint@2.3-service.samsung
 
-# Gatekeeper
-PRODUCT_PACKAGES += \
-    android.hardware.gatekeeper@1.0-impl \
-    android.hardware.gatekeeper@1.0-service
+# Gatekeeper — disabled (gta3xlwifi uses software gatekeeper, hardware needs TEE)
+# PRODUCT_PACKAGES += \
+#     android.hardware.gatekeeper@1.0-impl \
+#     android.hardware.gatekeeper@1.0-service
 
 # GPS
 PRODUCT_PACKAGES += \
@@ -259,9 +263,9 @@ PRODUCT_PACKAGES += \
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/thermal/thermal_info_config.json:$(TARGET_COPY_OUT_VENDOR)/etc/thermal_info_config.json
 
-# Touch
-PRODUCT_PACKAGES += \
-    vendor.lineage.touch@1.0-service.samsung
+# Touch — disabled for gta3xlwifi (IGloveMode blocks boot when HAL can't register)
+# PRODUCT_PACKAGES += \
+#     vendor.lineage.touch@1.0-service.samsung
 
 # Trust HAL
 PRODUCT_PACKAGES += \

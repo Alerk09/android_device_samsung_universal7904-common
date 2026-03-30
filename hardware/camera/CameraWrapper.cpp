@@ -72,7 +72,7 @@ camera_module_t HAL_MODULE_INFO_SYM = {
     .set_callbacks = camera_set_callbacks,
     .get_vendor_tag_ops = camera_get_vendor_tag_ops,
     .open_legacy = camera_open_legacy,
-    .set_torch_mode = camera_set_torch_mode, 
+    .set_torch_mode = camera_set_torch_mode,
     .init = camera_init,
     .reserved = {0},
 };
@@ -104,7 +104,21 @@ static int camera_get_camera_info(int camera_id, struct camera_info *info)
     ALOGV("%s", __FUNCTION__);
     if (check_vendor_module())
         return 0;
-    return gVendorModule->get_camera_info(camera_id, info);
+    int rv = gVendorModule->get_camera_info(camera_id, info);
+    if (rv == 0 && info->static_camera_characteristics) {
+        /* Sanitize metadata — strip Samsung vendor tags that corrupt
+         * Java-side CameraCharacteristics parsing */
+        static camera_metadata_t *sanitized[2] = { NULL, NULL };
+        if (camera_id >= 0 && camera_id < 2) {
+            if (sanitized[camera_id])
+                free_camera_metadata(sanitized[camera_id]);
+            sanitized[camera_id] = sanitize_camera_metadata(
+                info->static_camera_characteristics);
+            if (sanitized[camera_id])
+                info->static_camera_characteristics = sanitized[camera_id];
+        }
+    }
+    return rv;
 }
 
 static int camera_set_callbacks(const camera_module_callbacks_t *callbacks)
@@ -120,15 +134,13 @@ static void camera_get_vendor_tag_ops(vendor_tag_ops_t* ops)
     ALOGV("%s", __FUNCTION__);
     if (check_vendor_module())
         return;
-    return gVendorModule->get_vendor_tag_ops(ops);
+    gVendorModule->get_vendor_tag_ops(ops);
 }
 
-static int camera_open_legacy(const struct hw_module_t* module, const char* id, uint32_t halVersion __unused, struct hw_device_t** device)
+static int camera_open_legacy(const struct hw_module_t* module __unused, const char* id __unused, uint32_t halVersion __unused, struct hw_device_t** device __unused)
 {
     ALOGV("%s", __FUNCTION__);
-    if (check_vendor_module())
-        return 0;
-    return camera2_device_open(module, id, device);
+    return -EOPNOTSUPP;
 }
 
 static int camera_set_torch_mode(const char* camera_id, bool enabled)

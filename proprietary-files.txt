@@ -42,6 +42,16 @@ vendor/firmware/calliope_sram.bin
 -vendor/lib/camera.device@3.3-impl.so:vendor/lib/camera.device@3.3-impl.universal7904.so
 -vendor/lib/camera.device@3.4-impl.so:vendor/lib/camera.device@3.4-impl.universal7904.so
 -vendor/lib/camera.device@3.5-impl.so:vendor/lib/camera.device@3.5-impl.universal7904.so
+-vendor/lib/hw/camera.exynos7904.so:vendor/lib/hw/camera.vendor.universal7904.so
+-vendor/lib/libexynoscamera3.so
+-vendor/lib/libhwjpeg.so
+-vendor/lib/libcsc.so
+-vendor/lib/libuniplugin.so
+-vendor/lib/libsensorlistener.so
+-vendor/lib/libuniapi.so
+-vendor/lib/libSEF.quram.so
+-vendor/lib/libgiantmscl.so
+-vendor/lib/libsensorndkbridge.so
 
 # DRM
 -vendor/bin/hw/android.hardware.drm@1.3-service.widevine
