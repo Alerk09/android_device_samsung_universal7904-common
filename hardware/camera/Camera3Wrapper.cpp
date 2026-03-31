@@ -96,22 +96,7 @@ static const camera_metadata_t *camera3_construct_default_request_settings(const
     if (!device)
         return NULL;
 
-    const camera_metadata_t *vendor_meta = VENDOR_CALL(device, construct_default_request_settings, type);
-    if (!vendor_meta)
-        return NULL;
-
-    /* Strip Samsung vendor tags from default request settings.
-     * Without this, BadParcelableException occurs when the framework
-     * tries to serialize capture requests over Binder. */
-    static camera_metadata_t *sanitized_requests[8] = {};
-    if (type >= 0 && type < 8) {
-        if (sanitized_requests[type])
-            free_camera_metadata(sanitized_requests[type]);
-        sanitized_requests[type] = sanitize_camera_metadata(vendor_meta);
-        if (sanitized_requests[type])
-            return sanitized_requests[type];
-    }
-    return vendor_meta;
+    return VENDOR_CALL(device, construct_default_request_settings, type);
 }
 
 static int camera3_process_capture_request(const camera3_device_t *device, camera3_capture_request_t *request)
