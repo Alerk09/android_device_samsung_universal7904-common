@@ -14,8 +14,18 @@ on post-fs-data
     rm /data/vendor/gps/smd_started
     rm /data/vendor/gps/sv_cno.info
 
-# GPS daemon
-service gpsd /vendor/bin/hw/gpsd -c /vendor/etc/gnss/gps.cfg
+# Broadcom GNSS UART — SM-T510 uses BCM47531 on ttySAC0
+    chmod 0660 /dev/ttySAC0
+    chown gps system /dev/ttySAC0
+
+# GPS power GPIO — gpsd needs write access to toggle chip power
+    chown gps system /sys/class/sec/gps/GPS_PWR_EN/value
+    chmod 0664 /sys/class/sec/gps/GPS_PWR_EN/value
+    chown gps system /sys/class/gpio/gpio118/value
+    chmod 0664 /sys/class/gpio/gpio118/value
+
+# GPS daemon — Broadcom gpsd with XML config
+service gpsd /vendor/bin/hw/gpsd -c /vendor/etc/gnss/gps.xml
     class main
     user gps
     group system inet net_raw wakelock
