@@ -9,6 +9,11 @@
         </interface>
     </hal>
     <hal format="hidl">
+        <name>android.hardware.health</name>
+        <transport>hwbinder</transport>
+        <fqname>@2.0::IHealth/default</fqname>
+    </hal>
+    <hal format="hidl">
         <name>android.hardware.audio.effect</name>
         <transport>hwbinder</transport>
         <version>7.0</version>
@@ -51,12 +56,6 @@
         <fqname>@1.3::IDrmFactory/widevine</fqname>
     </hal>
     <!-- gatekeeper: removed from common manifest, using software gatekeeper in gta3xlwifi device.mk -->
-    <hal format="hidl">
-        <name>android.hardware.gnss</name>
-        <transport>hwbinder</transport>
-        <fqname>@1.1::IGnss/default</fqname>
-        <fqname>@2.0::IGnss/default</fqname>
-    </hal>
     <hal format="hidl">
         <name>android.hardware.graphics.allocator</name>
         <transport>hwbinder</transport>
@@ -179,15 +178,6 @@
         <version>1.0</version>
         <interface>
             <name>ITeeRegistry</name>
-            <instance>default</instance>
-        </interface>
-    </hal>
-    <hal format="hidl">
-        <name>vendor.lineage.touch</name>
-        <transport>hwbinder</transport>
-        <version>1.0</version>
-        <interface>
-            <name>IGloveMode</name>
             <instance>default</instance>
         </interface>
     </hal>

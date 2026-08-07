@@ -36,12 +36,25 @@ PRODUCT_COPY_FILES += \
     hardware/samsung_slsi/libbt/conf/bt_vendor.conf:$(TARGET_COPY_OUT_VENDOR)/etc/bluetooth/bt_vendor.conf
 
 # Boot animation
-TARGET_SCREEN_HEIGHT := 2340
-TARGET_SCREEN_WIDTH := 1080
+TARGET_SCREEN_HEIGHT := 1920
+TARGET_SCREEN_WIDTH := 1200
 
 # Camera
 PRODUCT_PACKAGES += \
     android.hardware.camera.provider@2.5-service.universal7904 \
+    camera.device@1.0-impl \
+    camera.device@3.2-impl \
+    camera.device@3.3-impl \
+    camera.device@3.4-impl \
+    camera.device@3.5-impl \
+    android.hardware.camera.device@3.6.vendor \
+    android.hardware.camera.provider@2.4.vendor \
+    android.hardware.camera.provider@2.5.vendor \
+    android.hardware.camera.provider@2.6.vendor \
+    android.hardware.graphics.mapper@4.0.vendor \
+    libexif.vendor \
+    libfmq.vendor \
+    libgralloctypes.vendor \
     camera.exynos7904
 
 # Charger
@@ -64,15 +77,6 @@ PRODUCT_PACKAGES += \
 # FastCharge
 PRODUCT_PACKAGES += \
     vendor.lineage.fastcharge@1.0-service.samsung
-
-# Fingerprint — disabled (gta3xlwifi has no fingerprint sensor, crashes on boot)
-# PRODUCT_PACKAGES += \
-#     android.hardware.biometrics.fingerprint@2.3-service.samsung
-
-# Gatekeeper — disabled (gta3xlwifi uses software gatekeeper, hardware needs TEE)
-# PRODUCT_PACKAGES += \
-#     android.hardware.gatekeeper@1.0-impl \
-#     android.hardware.gatekeeper@1.0-service
 
 # GPS
 PRODUCT_PACKAGES += \
@@ -112,6 +116,10 @@ PRODUCT_PACKAGES += \
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/keylayout/uinput-sec-fp.kl:$(TARGET_COPY_OUT_VENDOR)/usr/keylayout/uinput-sec-fp.kl
 
+# USB
+PRODUCT_PACKAGES += \
+    android.hardware.usb-service.samsung
+
 # Light
 PRODUCT_PACKAGES += \
     android.hardware.light-service.samsung
@@ -132,7 +140,6 @@ PRODUCT_PACKAGES += \
 
 # NFC
 PRODUCT_PACKAGES += \
-    android.hardware.nfc@1.2-service.samsung \
     com.android.nfc_extras \
     libnfc-nci \
     libnfc_nci_jni \
@@ -203,8 +210,7 @@ PRODUCT_COPY_FILES += \
 
 # Recovery
 PRODUCT_PACKAGES += \
-    fastbootd \
-    init.recovery.exynos7904.rc
+    fastbootd 
 
 # RIL
 PRODUCT_PACKAGES += \
@@ -263,17 +269,9 @@ PRODUCT_PACKAGES += \
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/thermal/thermal_info_config.json:$(TARGET_COPY_OUT_VENDOR)/etc/thermal_info_config.json
 
-# Touch — disabled for gta3xlwifi (IGloveMode blocks boot when HAL can't register)
-# PRODUCT_PACKAGES += \
-#     vendor.lineage.touch@1.0-service.samsung
-
 # Trust HAL
 PRODUCT_PACKAGES += \
     vendor.lineage.trust@1.0-service
-
-# USB
-PRODUCT_PACKAGES += \
-    android.hardware.usb-service.samsung
 
 # Vibrator
 PRODUCT_PACKAGES += \
