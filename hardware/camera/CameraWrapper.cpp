@@ -114,8 +114,15 @@ static int camera_get_camera_info(int camera_id, struct camera_info *info)
                 free_camera_metadata(sanitized[camera_id]);
             sanitized[camera_id] = sanitize_camera_metadata(
                 info->static_camera_characteristics);
-            if (sanitized[camera_id])
+            if (sanitized[camera_id]) {
+                camera_metadata_entry_t entry;
+                if (find_camera_metadata_entry(sanitized[camera_id], ANDROID_LENS_FACING, &entry) != 0) {
+                    uint8_t facing = (info->facing == CAMERA_FACING_FRONT) ?
+                        ANDROID_LENS_FACING_FRONT : ANDROID_LENS_FACING_BACK;
+                    add_camera_metadata_entry(sanitized[camera_id], ANDROID_LENS_FACING, &facing, 1);
+                }
                 info->static_camera_characteristics = sanitized[camera_id];
+            }
         }
     }
     return rv;
