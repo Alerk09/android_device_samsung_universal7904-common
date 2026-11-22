@@ -35,7 +35,7 @@ static camera_metadata_t* sanitize_camera_metadata(const camera_metadata_t *src)
     if (!src) return NULL;
     size_t src_count = get_camera_metadata_entry_count(src);
     size_t src_data = get_camera_metadata_data_count(src);
-    camera_metadata_t *dst = allocate_camera_metadata(src_count, src_data);
+    camera_metadata_t *dst = allocate_camera_metadata(src_count + 16, src_data + 256);
     if (!dst) return NULL;
     for (size_t i = 0; i < src_count; i++) {
         camera_metadata_entry_t entry;
